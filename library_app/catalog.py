@@ -18,7 +18,7 @@ class Catalog:
     def add_book(self, book: Book) -> None:
         if book is None:
             raise ValueError("book cannot be None.")
-        if any(b.isbn == book.isbn for b in self._books):
+        if any(b.title == book.title for b in self._books):
             raise RuntimeError(f"A book with ISBN '{book.isbn}' already exists in the catalog.")
         self._books.append(book)
 
@@ -28,8 +28,7 @@ class Catalog:
     def search_by_title(self, title_query: str) -> list[Book]:
         if not title_query or not title_query.strip():
             return []
-        query_lower = title_query.lower()
-        return [b for b in self._books if query_lower in b.title.lower()]
+        return [b for b in self._books if title_query in b.title]
 
     def search_by_author(self, author_query: str) -> list[Book]:
         if not author_query or not author_query.strip():
@@ -39,8 +38,6 @@ class Catalog:
 
     def check_out_book(self, isbn: str) -> None:
         book = self.find_by_isbn(isbn)
-        if book is None:
-            raise RuntimeError(f"No book found with ISBN '{isbn}'.")
         book.check_out()
 
     def return_book(self, isbn: str) -> None:

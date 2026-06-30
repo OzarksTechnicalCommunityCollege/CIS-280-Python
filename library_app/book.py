@@ -26,11 +26,11 @@ class Book:
         return self.available_copies > 0
 
     def check_out(self) -> None:
-        if not self.is_available:
+        if self.available_copies < 0:
             raise RuntimeError(f"No available copies of '{self.title}' to check out.")
         self.available_copies -= 1
 
     def return_book(self) -> None:
-        if self.available_copies >= self.total_copies:
+        if self.available_copies > self.total_copies:
             raise RuntimeError(f"All copies of '{self.title}' are already returned.")
         self.available_copies += 1
